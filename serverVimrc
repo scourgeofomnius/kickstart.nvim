@@ -1,0 +1,113 @@
+let data_dir = has('nvim') ? stdpath('data') . '/site' : '~/.vim'
+if empty(glob(data_dir . '/autoload/plug.vim'))
+      silent execute '!curl -fLo '.data_dir.'/autoload/plug.vim --create-dirs  https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim'
+        autocmd VimEnter * PlugInstall --sync | source $MYVIMRC
+    endif
+
+call plug#begin()
+Plug 'nvim-lua/plenary.nvim'
+Plug 'neoclide/coc.nvim', {'branch': 'release'}
+Plug 'junegunn/fzf', { 'dir': '~/.fzf', 'do': './install --all' }
+Plug 'voldikss/vim-floaterm'
+Plug 'morhetz/gruvbox'
+Plug 'ThePrimeagen/harpoon'
+Plug 'nvim-telescope/telescope.nvim'
+Plug 'neovim/nvim-lspconfig'
+Plug 'tpope/vim-surround'
+
+call plug#end()
+
+let g:coc_disable_startup_warning = 1
+
+
+
+:lua require'lspconfig'.intelephense.setup{}
+
+let mapleader = " "
+colorscheme gruvbox
+:set formatoptions-=cro
+:set nocompatible   
+:set undofile
+:set relativenumber
+:set scrolloff=10
+:set hidden
+:set tabstop=4
+:set shiftwidth=4
+:set expandtab
+:set laststatus=2
+:set backspace=indent,eol,start
+:set number
+:set nowrap
+:set ignorecase
+:set smartcase
+:set showmatch
+:set history=1000
+:set wildmenu
+:set wildmode=list:longest
+:set background=dark
+:map <F2> :SemanticHighlightToggle<CR>
+:map <F3> :vert botright term<CR>
+
+
+autocmd Filetype python set cursorcolumn
+"2 is blue
+"3 is oragne
+"4 is purple
+"7 is white
+
+let g:semanticTermColors = [2,3,4,5,6,9,10,11,12,13,14,15,2,3,4,5,6,9,10,11]
+
+"let g:semanticTermColors = [ '#72d572', '#c5e1a5', '#e6ee9c', '#fff59d', '#ffe082', '#ffcc80', '#ffab91', '#bcaaa4', '#b0bec5', '#ffa726', '#ff8a65', '#f9bdbb', '#f9bdbb', '#f8bbd0', '#e1bee7', '#d1c4e9', '#ffe0b2', '#c5cae9', '#d0d9ff', '#b3e5fc', '#b2ebf2', '#b2dfdb', '#a3e9a4', '#dcedc8' , '#f0f4c3', '#ffb74d' ]
+
+
+nnoremap <leader>y "*y
+nnoremap <leader>p "*p
+
+
+"custom commands
+"
+:nnoremap <C-F> :FZF<CR>
+:nnoremap <silent> <C-Up> :resize -1<CR>
+:nnoremap <silent> <C-Down> :resize +1<CR>
+:nnoremap <silent> <C-left> :vertical resize -1<CR>
+:nnoremap <silent> <C-right> :vertical resize +1<CR>
+:nnoremap <silent> <c-l> :wincmd l<CR>
+:nnoremap <silent> <c-h> :wincmd h<CR>
+
+
+"If i want to go back to YouCompletMe
+":map <F4> :YcmCompleter GoToDeclaration<CR>
+":map <F5> :YcmCompleter GoToDefinition<CR>
+
+
+nmap <silent> gd <Plug>(coc-definition)
+nmap <silent> gy <Plug>(coc-type-definition)
+nmap <silent> gi <Plug>(coc-implementation)
+nmap <silent> gr <Plug>(coc-references)
+nnoremap   <silent>   <F7>    :FloatermNew<CR>
+tnoremap   <silent>   <F7>    <C-\><C-n>:FloatermNew<CR>
+nnoremap   <silent>   <F8>    :FloatermPrev<CR>
+tnoremap   <silent>   <F8>    <C-\><C-n>:FloatermPrev<CR>
+nnoremap   <silent>   <F9>    :FloatermNext<CR>
+tnoremap   <silent>   <F9>    <C-\><C-n>:FloatermNext<CR>
+nnoremap   <silent>   <F12>   :FloatermToggle<CR>
+tnoremap   <silent>   <F12>   <C-\><C-n>:FloatermToggle<CR>
+nnoremap   <silent>   af   :lua require("harpoon.mark").add_file()<CR>
+nnoremap   <silent>   a1   :lua require("harpoon.ui").nav_file(1)<CR>
+nnoremap   <silent>   a2   :lua require("harpoon.ui").nav_file(2)<CR>
+nnoremap   <silent>   a3   :lua require("harpoon.ui").nav_file(3)<CR>
+nnoremap   <silent>   a4   :lua require("harpoon.ui").nav_file(4)<CR>
+nnoremap   <silent>   <F5>    :lua require("harpoon.ui").toggle_quick_menu()<CR>) 
+tnoremap   <silent>   <F5>    <C-\><C->:lua require("harpoon.ui").toggle_quick_menu()<CR>)
+nmap   <silent>   ff    :lua require("telescope.builtin").find_files({})<CR>
+nmap   <leader>   fg    :lua require("telescope.builtin").live_grep({})<CR>
+
+
+" Custom command to replace visual block numbers with sequential numbers
+command! -range=% SequenceThis call MySequentialReplaceVisualNumbers(<line1>, <line2>)
+
+function! MySequentialReplaceVisualNumbers(start, end) range
+  execute a:start.','.a:end.'s/\%V\d\+/\=line(".") - '.a:start.' + 1/'
+  endfunction
+
+
