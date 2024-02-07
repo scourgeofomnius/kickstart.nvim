@@ -203,6 +203,16 @@ require('lazy').setup({
     end,
   },
 
+  --{
+  --  'junegunn/vim-easy-align',
+  --  keys = {
+  --    {'x', 'ga', '<Plug>(EasyAlign)', desc='easily aligns text'},
+  --  },
+----    config = function()
+----       require('vim-easy-align').setup()
+----    end,
+  --},
+
   {
     -- Set lualine as statusline
     'nvim-lualine/lualine.nvim',
@@ -271,7 +281,7 @@ require('lazy').setup({
   --    Uncomment the following line and add your plugins to `lua/custom/plugins/*.lua` to get going.
   --
   --    For additional information see: https://github.com/folke/lazy.nvim#-structuring-your-plugins
-  -- { import = 'custom.plugins' },
+{ import = 'custom.plugins' },
 }, {})
 
 -- [[ Setting options ]]
@@ -357,6 +367,7 @@ require('telescope').setup {
 
 -- Enable telescope fzf native, if installed
 pcall(require('telescope').load_extension, 'fzf')
+
 
 -- Telescope live_grep in git root
 -- Function to find the git root directory based on the current buffer's path
