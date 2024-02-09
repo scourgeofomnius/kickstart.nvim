@@ -21,7 +21,7 @@ M.number_visual_selection = function()
     local line_numbering = 1
     -- Calculate the width needed for padding based on the total number of lines
     for line = start_line, end_line do
-        formatline = string.format('%d,s/\\d\\+/%d', line, line_numbering)
+        local formatline = string.format('%d,s/\\d\\+/%d', line, line_numbering)
         vim.cmd(formatline)
         line_numbering = line_numbering + 1
     end
